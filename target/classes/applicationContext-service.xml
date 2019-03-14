@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--<bean class="com.map.config.WebConfig"/>-->
+    <!-- 使用组件扫描的方式可以一次扫描多个Controller -->
+    <context:component-scan base-package="com.map"/>
+
+
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!-- 配置数据源 -->
+        <property name="dataSource"
+                  ref="dataSource"/>
+    </bean>
+
+    <!-- 配置Json -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean id="jsonMessageConverter"
+                  class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <constructor-arg name="objectMapper" ref="objectMapper"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+
+    <bean id="objectMapperBuilder" class="org.springframework.http.converter.json.Jackson2ObjectMapperBuilder"/>
+
+
+    <bean id="objectMapper" factory-bean="objectMapperBuilder" factory-method="build">
+        <property name="serializationInclusion" value="NON_NULL"/>
+        <property name="dateFormat">
+            <bean class="java.text.SimpleDateFormat">
+                <constructor-arg name="pattern" value="yyyy-MM-dd HH:mm:ss"/>
+            </bean>
+        </property>
+    </bean>
+
+
+    <!--<mvc:annotation-driven />-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.map.web.interceptor.TokenInterceptor"/>
+
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.map.web.interceptor.FileTypeInterceptor" />
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.map.web.interceptor.AdminInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <tx:annotation-driven transaction-manager="transactionManager"
+                          proxy-target-class="true"/>
+
+    <!--文件上传(Max 20MB, 需要对tomcat & nginx也进行上传文件大小限制修改)-->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+          p:defaultEncoding="UTF-8"
+          p:maxUploadSize="52428800"/>
+
+    <bean id="multipartResolver1"
+          class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+    </bean>
+
+</beans>
