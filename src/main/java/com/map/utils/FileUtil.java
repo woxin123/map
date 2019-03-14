@@ -12,7 +12,6 @@ public class FileUtil {
 
     public static final String LINUX_PATH = "/home/mengchen/fileUpload";
 
-    public static final String FFMPEG_WINDOWS = "D:\\下载\\ffmpeg-20180314-f706cdd-win64-static\\bin\\ffmpeg";
 
     public static final String PHOTO = "/photo";
 
@@ -56,8 +55,5 @@ public class FileUtil {
         return suffix;
     }
 
-    public static String getFfmpegPath() {
-        return FFMPEG_WINDOWS;
-    }
 
 }

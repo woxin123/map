@@ -51,24 +51,30 @@
         </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean class="com.map.web.interceptor.FileTypeInterceptor" />
+            <bean class="com.map.web.interceptor.FileTypeInterceptor"/>
         </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean class="com.map.web.interceptor.AdminInterceptor" />
+            <bean class="com.map.web.interceptor.AdminInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 
     <tx:annotation-driven transaction-manager="transactionManager"
                           proxy-target-class="true"/>
 
-    <!--文件上传(Max 20MB, 需要对tomcat & nginx也进行上传文件大小限制修改)-->
-    <bean id="multipartResolver"
-          class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
-          p:defaultEncoding="UTF-8"
-          p:maxUploadSize="52428800"/>
+    <!--  commons-fileupload有严重漏洞  -->
+    <!--    &lt;!&ndash;文件上传(Max 20MB, 需要对tomcat & nginx也进行上传文件大小限制修改)&ndash;&gt;-->
+    <!--    <bean id="multipartResolver"-->
+    <!--          class="org.springframework.web.multipart.commons.CommonsMultipartResolver"-->
+    <!--          p:defaultEncoding="UTF-8"-->
+    <!--          p:maxUploadSize="52428800"/>-->
 
-    <bean id="multipartResolver1"
+    <!--    <bean id="multipartResolver1"-->
+    <!--          class="org.springframework.web.multipart.support.StandardServletMultipartResolver">-->
+    <!--    </bean>-->
+
+    <!--    Servlet3.0 原生配置-->
+    <bean id="multipartResolver"
           class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
     </bean>
 

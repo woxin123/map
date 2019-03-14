@@ -4,7 +4,7 @@ package com.map.web.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.map.converter.ImageConverter;
+import com.map.utils.FileUtil;
 import com.map.web.View.SimpleView;
 import com.map.web.model.ImageMessage;
 import com.map.web.model.ResultBuilder;
@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.map.web.model.VideoMessage;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import static com.map.utils.FileUtil.getMultiPartSuffix;
 import static com.map.utils.FileUtil.getParentPath;
@@ -162,9 +162,11 @@ public class FileUploadController {
         for (MultipartFile file : photos) {
 
             String fileRandomName = getRandomFileName();
-            paths[count] = "/photo/" + fileRandomName + ".jpg";
+            String fileSuffix = FileUtil.getMultiPartSuffix(file);
+            paths[count] = "/photo/" + fileRandomName + fileSuffix;
             try {
-                ImageConverter.imageConverter(parentPath, fileRandomName, file.getInputStream());
+                File realFile = new File(parentFile, fileRandomName + "." + fileSuffix);
+                file.transferTo(realFile);
             } catch (IOException e) {
                 logger.info("文件上传出错");
                 e.printStackTrace();
