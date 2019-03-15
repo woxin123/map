@@ -49,14 +49,14 @@
             <bean class="com.map.web.interceptor.TokenInterceptor"/>
 
         </mvc:interceptor>
-        <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <bean class="com.map.web.interceptor.FileTypeInterceptor"/>
-        </mvc:interceptor>
-        <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <bean class="com.map.web.interceptor.AdminInterceptor"/>
-        </mvc:interceptor>
+<!--        <mvc:interceptor>-->
+<!--            <mvc:mapping path="/**"/>-->
+<!--            <bean class="com.map.web.interceptor.FileTypeInterceptor"/>-->
+<!--        </mvc:interceptor>-->
+<!--        <mvc:interceptor>-->
+<!--            <mvc:mapping path="/**"/>-->
+<!--            <bean class="com.map.web.interceptor.AdminInterceptor"/>-->
+<!--        </mvc:interceptor>-->
     </mvc:interceptors>
 
     <tx:annotation-driven transaction-manager="transactionManager"

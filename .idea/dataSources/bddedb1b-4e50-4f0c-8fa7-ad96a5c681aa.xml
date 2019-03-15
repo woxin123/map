@@ -1154,7 +1154,7 @@ latitude</ColNames>
     </column>
     <column id="277" parent="230" name="password">
       <Position>4</Position>
-      <DataType>varchar(20)|0s</DataType>
+      <DataType>varchar(256)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="278" parent="230" name="type">
@@ -1176,7 +1176,7 @@ latitude</ColNames>
     <column id="281" parent="230" name="sex">
       <Position>8</Position>
       <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
+      <DefaultExpression>2</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="282" parent="230" name="email">

@@ -28,6 +28,9 @@
         <!-- 加载Mybatis全局配置文件 -->
         <property name="configLocation"
                   value="classpath:SqlMapConfig.xml"/>
+
+        <property name="mapperLocations" value="classpath:mappers/*Mapper.xml" />
+
         <!-- 配置mybatis分页插件 -->
         <property name="plugins">
             <array>
@@ -45,7 +48,7 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <!-- 扫描包路径，如果需要扫描多个包中间用半角逗号隔开 -->
         <property name="basePackage"
-                  value="com.map.mapper"></property>
+                  value="com.map.dao"></property>
         <property name="sqlSessionFactoryBeanName"
                   value="sqlSessionFactory"/>
     </bean>

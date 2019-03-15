@@ -1,8 +1,7 @@
 package com.map.web.interceptor;
 
 import com.auth0.jwt.interfaces.Claim;
-import com.map.utils.JWTUtils;
-import com.map.utils.JedisUtils;
+import com.map.utils.TokenUtil;
 import org.apache.log4j.Logger;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -36,7 +35,7 @@ public class TokenInterceptor implements HandlerInterceptor {
             } else {
                 int id = 0;
                 try {
-                    Map<String, Claim> map = JWTUtils.verifyToken(token);
+                    Map<String, Claim> map = TokenUtil.verifyToken(token);
                     id = map.get("id").asInt();
                     request.setAttribute("id", id);
                     System.out.println(id);
@@ -45,7 +44,7 @@ public class TokenInterceptor implements HandlerInterceptor {
                     logger.info("登录过期");
                 }
                 // 在Redis中查询存储的token
-                String sToken = JedisUtils.getToken(String.valueOf(id));
+                String sToken = TokenUtil.getTokenByUserId(id);
                 if (!token.equals(sToken)) {
                     // 登录异常，需要强制下线
                     logger.info("登录异常");
