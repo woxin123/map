@@ -137,9 +137,8 @@ public class FileUploadController {
 
     @PostMapping("/uploadMangPhotos/{pointId:\\d+}")
     public ResultModel uploadMangPicture(@PathVariable int pointId, String title,
-                                         MultipartHttpServletRequest request) {
+                                         List<MultipartFile> photos, HttpServletRequest request) {
         Integer userId = (Integer) request.getAttribute("id");
-        List<MultipartFile> photos = request.getFiles("file");
         if (photos.isEmpty()) {
             return ResultBuilder.getFailure(1, "文件内容为空");
         }

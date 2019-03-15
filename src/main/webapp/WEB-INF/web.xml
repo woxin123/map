@@ -42,6 +42,9 @@
             <param-name>contextConfigLocation</param-name>
             <param-value>WEB-INF/spring/springmvc.xml</param-value>
         </init-param>
+        <multipart-config>
+            <max-file-size>5120</max-file-size>
+        </multipart-config>
     </servlet>
     <servlet-mapping>
         <servlet-name>spring</servlet-name>
