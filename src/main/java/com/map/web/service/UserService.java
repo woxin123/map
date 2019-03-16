@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.map.common.ServerResponse;
 import com.map.dto.UserInputDTO;
 import com.map.pojo.User;
+import com.map.vo.UserOutputVO;
 import com.map.web.model.ResultModel;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface UserService {
 
     ServerResponse login(String account, String password) throws Exception;
 
-    ResultModel getUserMessageById(int userId);
+    ServerResponse<UserOutputVO> getUserMessageById(int userId);
 
     ResultModel saveIcon(int userId, String path);
 

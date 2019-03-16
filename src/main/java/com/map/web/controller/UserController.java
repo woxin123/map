@@ -2,11 +2,13 @@ package com.map.web.controller;
 
 import com.map.common.ServerResponse;
 import com.map.dto.UserInputDTO;
+import com.map.vo.UserOutputVO;
 import com.map.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -28,13 +30,13 @@ public class UserController {
     public ServerResponse login(String account, String password) throws Exception {
         return userService.login(account, password);
     }
-//
-//    @GetMapping("/me")
-//    @JsonView(SimpleView.class)
-//    public ResultModel getUserMessageById(HttpServletRequest request) {
-//        Integer userId = (Integer) request.getAttribute("id");
-//        return userService.getUserMessageById(userId);
-//    }
+
+    @GetMapping("user")
+    public ServerResponse<UserOutputVO> getUserMessageById(HttpServletRequest request) {
+        Integer userId = (Integer) request.getAttribute("id");
+        return userService.getUserMessageById(userId);
+
+    }
 //
 //    @GetMapping("/admin/users")
 //    @JsonView(DetialView.class)

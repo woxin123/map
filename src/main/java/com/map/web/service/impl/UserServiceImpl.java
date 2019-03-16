@@ -4,6 +4,7 @@ import com.map.common.Const;
 import com.map.common.ServerResponse;
 import com.map.dao.UserMapper;
 import com.map.dto.UserInputDTO;
+import com.map.vo.UserOutputVO;
 import com.map.pojo.User;
 import com.map.utils.TokenUtil;
 import com.map.utils.crypto.MD5Util;
@@ -85,14 +86,32 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public ResultModel getUserMessageById(int userId) {
+    public ServerResponse<UserOutputVO> getUserMessageById(int userId) {
         User user = userMapper.selectByPrimaryKey(userId);
         if (user == null) {
             logger.info("用户不存在");
-            return ResultBuilder.getFailure(1, "用户不存在");
+            return ServerResponse.createByErrorMessage("获取用户信息出错");
         } else {
-            return ResultBuilder.getSuccess(user);
+            UserOutputVO userOutputVO = assembleUserOutputVO(user);
+            return ServerResponse.createBySuccess(userOutputVO);
         }
+    }
+
+    private UserOutputVO assembleUserOutputVO(User user) {
+        UserOutputVO userOutputDTO = new UserOutputVO();
+        userOutputDTO.setUsername(user.getUsername());
+        userOutputDTO.setAccount(user.getAccount());
+        userOutputDTO.setPhone(user.getPhone());
+        userOutputDTO.setEmail(user.getEmail());
+        if (user.getSex() == Const.SEX.WOMAN) {
+            userOutputDTO.setSex(Const.SEX.WOMAN_STR);
+        } else if (user.getSex() == Const.SEX.MAN) {
+            userOutputDTO.setSex(Const.SEX.MAN_STR);
+        } else {
+            userOutputDTO.setSex(Const.SEX.SECRET_STR);
+        }
+
+        return userOutputDTO;
     }
 
     public ResultModel saveIcon(int userId, String path) {

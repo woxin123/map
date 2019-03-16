@@ -15,5 +15,10 @@ public interface Const {
         int WOMAN = 0;
         int MAN = 1;
         int SECRET = 2;
+        String WOMAN_STR = "女";
+        String MAN_STR = "男";
+        String SECRET_STR = "秘密";
     }
+
+
 }
