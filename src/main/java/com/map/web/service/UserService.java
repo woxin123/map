@@ -23,7 +23,7 @@ public interface UserService {
 //
 //    User findUserByUsername(String username);
 //
-//    PageInfo<User> getUsers(int pageNo, int pageSize);
+    ServerResponse<PageInfo<User>> getAllUsers(int pageNum, int pageSize);
 //
 //    ResultModel updateUser(User user);
 //

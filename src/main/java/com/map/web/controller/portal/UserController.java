@@ -1,4 +1,4 @@
-package com.map.web.controller;
+package com.map.web.controller.portal;
 
 import com.map.common.ServerResponse;
 import com.map.dto.UserInputDTO;

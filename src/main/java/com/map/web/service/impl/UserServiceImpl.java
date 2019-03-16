@@ -1,5 +1,7 @@
 package com.map.web.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.map.common.Const;
 import com.map.common.ServerResponse;
 import com.map.dao.UserMapper;
@@ -15,6 +17,8 @@ import com.map.web.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -127,14 +131,14 @@ public class UserServiceImpl implements UserService {
     }
 
 
-//
-//    @Override
-//    public PageInfo<User> getUsers(int pageNo, int pageSize) {
-//        PageHelper.startPage(pageNo, pageSize);
-//        List<User> users = userMapper.getUsers();
-//        PageInfo<User> pageInfo = new PageInfo<>(users);
-//        return pageInfo;
-//    }
+
+    @Override
+    public ServerResponse<PageInfo<User>> getAllUsers(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<User> users = userMapper.selectALl();
+        PageInfo<User> pageInfo = new PageInfo<>(users);
+        return ServerResponse.createBySuccess(pageInfo);
+    }
 //
 //    @Override
 //    public ResultModel updateUser(User user) {

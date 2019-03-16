@@ -32,6 +32,12 @@
     WHERE account = #{account}
   </select>
 
+  <select id="selectALl" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM map_user
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from map_user
     where id = #{id,jdbcType=INTEGER}

@@ -2,6 +2,8 @@ package com.map.dao;
 
 import com.map.pojo.User;
 
+import java.util.List;
+
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -16,4 +18,6 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     User selectByAccount(String account);
+
+    List<User> selectALl();
 }
