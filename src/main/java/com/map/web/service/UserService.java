@@ -7,10 +7,9 @@ import com.map.pojo.User;
 import com.map.vo.UserOutputVO;
 import com.map.web.model.ResultModel;
 
-import java.util.List;
-
 
 public interface UserService {
+
     ServerResponse register(UserInputDTO user);
 
     ServerResponse login(String account, String password) throws Exception;
@@ -20,16 +19,14 @@ public interface UserService {
     ResultModel saveIcon(int userId, String path);
 
     User findUserById(int userId);
-//
-//    User findUserByUsername(String username);
-//
+
     ServerResponse<PageInfo<User>> getAllUsers(int pageNum, int pageSize);
 //
 //    ResultModel updateUser(User user);
 //
 //    ResultModel deleteUser(int userId);
-//
-//    ResultModel lockedUser(int userId);
-//
-//    ResultModel unLockUser(int userId);
+
+    ServerResponse lockedUser(int userId);
+
+    ServerResponse unLockUser(int userId);
 }

@@ -167,28 +167,34 @@ public class UserServiceImpl implements UserService {
 //        return ResultBuilder.getSuccess("用户删除成功");
 //    }
 //
-//    @Override
-//    public ResultModel lockedUser(int userId) {
-//        if (userMapper.findUserById(userId) == null) {
-//            return ResultBuilder.getFailure(1, "用户不存在");
-//        }
-//        boolean isLock = userMapper.lockUser(userId);
-//        if (isLock) {
-//            return ResultBuilder.getSuccess("锁定用户成功");
-//        }
-//        return ResultBuilder.getFailure(2, "锁定用户失败");
-//    }
-//
-//    @Override
-//    public ResultModel unLockUser(int userId) {
-//        if (userMapper.findUserById(userId) == null) {
-//            return ResultBuilder.getFailure(1, "用户不存在");
-//        }
-//        boolean isUnLock = userMapper.unLockUser(userId);
-//        if (isUnLock) {
-//            return ResultBuilder.getSuccess("用户解锁成功");
-//        }
-//        return ResultBuilder.getFailure(2, "用户解锁失败");
-//    }
+    @Override
+    public ServerResponse lockedUser(int userId) {
+        if (userMapper.selectByPrimaryKey(userId) == null) {
+            return ServerResponse.createByErrorMessage("用户不存在");
+        }
+        User user = new User();
+        user.setId(userId);
+        user.setIslock(Const.UserStaus.LOCK);
+        int rowCount = userMapper.updateByPrimaryKeySelective(user);
+        if (rowCount > 0) {
+            return ServerResponse.createBySuccessMessage("锁定用户成功");
+        }
+        return ServerResponse.createByErrorMessage("锁定用户失败");
+    }
+
+    @Override
+    public ServerResponse unLockUser(int userId) {
+        if (userMapper.selectByPrimaryKey(userId) == null) {
+            return ServerResponse.createByErrorMessage("用户不存在");
+        }
+        User user = new User();
+        user.setId(userId);
+        user.setIslock(Const.UserStaus.UNLOCK);
+        int rowCount = userMapper.updateByPrimaryKeySelective(user);
+        if (rowCount > 0) {
+            return ServerResponse.createBySuccessMessage("用户解锁成功");
+        }
+        return ServerResponse.createByErrorMessage("用户解锁失败");
+    }
 
 }
