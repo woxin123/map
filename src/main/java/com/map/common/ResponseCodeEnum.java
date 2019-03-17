@@ -20,7 +20,9 @@ public enum ResponseCodeEnum {
     /**
      * 参数错误
      */
-    ILLEGAL_ARGUMENT(2, "ILLEGAL_ARGUMENT");
+    ILLEGAL_ARGUMENT(2, "ILLEGAL_ARGUMENT"),
+
+    NOT_FOUNT(404, "NOT_FOUNT");
 
     private final int code;
     private final String desc;

@@ -28,4 +28,6 @@ public interface PointMapper {
                                     @Param(value = "x2") double x2,
                                     @Param(value = "y1") double y1,
                                     @Param(value = "y2") double y2);
+
+    List<Point> selectAll();
 }

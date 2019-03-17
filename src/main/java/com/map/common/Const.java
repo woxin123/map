@@ -26,4 +26,9 @@ public interface Const {
         int AUD_INFORMATION = 2;
         int VID_INFORMATION = 3;
     }
+
+    interface PointStatus {
+        int LOCK = 1;
+        int UNLOCK = 0;
+    }
 }

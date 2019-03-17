@@ -38,6 +38,12 @@
         AND latitude &lt; #{y1} AND latitude &gt; #{y2}
         AND isLock = 0
     </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM map_point
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from map_point
