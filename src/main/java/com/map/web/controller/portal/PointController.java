@@ -3,8 +3,10 @@ package com.map.web.controller.portal;
 import com.map.common.ServerResponse;
 import com.map.web.service.PointService;
 import com.map.utils.DoubleUtil;
+import net.sf.jsqlparser.schema.Server;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,10 +45,10 @@ public class PointController {
         return pointService.addPoint(name, longitude, latitude, userId);
     }
 
-//    @RequestMapping("/none/getPoints")
-//    public ResultModel getPoints(double longitude, double latitude, int range) {
-//        return pointService.getPoints(longitude, latitude, range);
-//    }
+    @GetMapping
+    public ServerResponse getPoints(double longitude, double latitude, int range) {
+        return pointService.getPoints(longitude, latitude, range);
+    }
 //
 //    @RequestMapping("/none/getItems/{pointId}")
 //    public ResultModel getItems(@PathVariable int pointId) {

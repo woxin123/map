@@ -23,6 +23,14 @@
     from information
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByMessageTypeCount" resultType="int" parameterType="map">
+    SELECT IFNULL(COUNT(*) , 0)
+    FROM information
+    WHERE point_id = #{pointId}
+    AND type = #{type}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from information
     where id = #{id,jdbcType=INTEGER}

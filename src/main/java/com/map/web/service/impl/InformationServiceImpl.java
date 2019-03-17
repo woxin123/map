@@ -122,10 +122,10 @@
 //        ItemsModel itemsModel = itemsMapper.findItemsByPointId(information.getPointId());
 //        switch (information.getType()) {
 //            case 0:
-//                itemsModel.setMesCount(itemsModel.getMesCount() - 1);
+//                itemsModel.setTxtCount(itemsModel.getTxtCount() - 1);
 //                break;
 //            case 1:
-//                itemsModel.setPhoCount(itemsModel.getPhoCount() - 1);
+//                itemsModel.setImgCount(itemsModel.getImgCount() - 1);
 //                break;
 //            case 2:
 //                itemsModel.setAudCount(itemsModel.getAudCount() - 1);
@@ -175,10 +175,10 @@
 //        ItemsModel itemsModel = itemsMapper.findItemsByPointId(information.getPointId());
 //        switch (information.getType()) {
 //            case 0:
-//                itemsModel.setMesCount(itemsModel.getMesCount() + 1);
+//                itemsModel.setTxtCount(itemsModel.getTxtCount() + 1);
 //                break;
 //            case 1:
-//                itemsModel.setPhoCount(itemsModel.getPhoCount() + 1);
+//                itemsModel.setImgCount(itemsModel.getImgCount() + 1);
 //                break;
 //            case 2:
 //                itemsModel.setAudCount(itemsModel.getAudCount() + 1);

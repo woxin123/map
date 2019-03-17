@@ -6,7 +6,7 @@ package com.map.common;
  */
 public interface Const {
 
-    interface UserStaus {
+    interface UserStatus {
         int LOCK = 1;
         int UNLOCK = 0;
     }
@@ -20,5 +20,10 @@ public interface Const {
         String SECRET_STR = "秘密";
     }
 
-
+    interface InformationType {
+        int TXT_INFORMATION = 0;
+        int IMG_INFORMATION = 1;
+        int AUD_INFORMATION = 2;
+        int VID_INFORMATION = 3;
+    }
 }

@@ -1,12 +1,14 @@
 package com.map.web.service;
 
 import com.map.common.ServerResponse;
-import com.map.web.model.ResultModel;
+import com.map.vo.PointVO;
+
+import java.util.List;
 
 public interface PointService {
     ServerResponse addPoint(String name, double longitude, double latitude, int id);
 
-//    ResultModel getPoints(double longitude, double latitude, int range);
+    ServerResponse<List<PointVO>> getPoints(double longitude, double latitude, int range);
 //
 //    ResultModel getItems(int pointId);
 //

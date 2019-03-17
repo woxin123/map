@@ -1,16 +1,18 @@
 package com.map.web.service.impl;
 
+import com.map.common.Const;
 import com.map.common.ServerResponse;
+import com.map.dao.InformationMapper;
 import com.map.dao.PointMapper;
+import com.map.dao.UserMapper;
+import com.map.dto.InformationCount;
+import com.map.pojo.User;
+import com.map.utils.DateTimeUtil;
+import com.map.vo.PointVO;
 import com.map.pojo.Point;
-import com.map.web.model.ItemsModel;
-import com.map.web.model.PointAndItems;
-import com.map.web.model.ResultBuilder;
-import com.map.web.model.ResultModel;
 import com.map.web.service.PointService;
 import com.map.utils.MapUtil;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,8 +27,14 @@ public class PointServiceImpl implements PointService {
 
     private final PointMapper pointMapper;
 
-    public PointServiceImpl(PointMapper pointMapper) {
+    private final UserMapper userMapper;
+
+    private final InformationMapper informationMapper;
+
+    public PointServiceImpl(PointMapper pointMapper, UserMapper userMapper, InformationMapper informationMapper) {
         this.pointMapper = pointMapper;
+        this.userMapper = userMapper;
+        this.informationMapper = informationMapper;
     }
 
 
@@ -51,27 +59,40 @@ public class PointServiceImpl implements PointService {
             return ServerResponse.createByErrorMessage("该点已存在");
         }
     }
-//
-//    public ResultModel getPoints(double longitude, double latitude, int range) {
-//        double dlon = MapUtil.dlon(range, latitude);
-//        double dlat = MapUtil.dlat(range, longitude);
-//        System.out.println(dlat + " " + dlon);
-//        double x1 = longitude + dlon;
-//        double x2 = longitude - dlon;
-//        double y1 = latitude + dlat;
-//        double y2 = latitude - dlat;
-//        List<Point> points = pointMapper.findPoints(x1, x2, y1, y2);
-//        List<PointAndItems> pointAndItems = new ArrayList<PointAndItems>();
-//        for (Point point : points) {
-//            ItemsModel itemsModel = itemsMapper.findItemsByPointId(point.getId());
-//            pointAndItems.add(new PointAndItems(point, itemsModel));
-//        }
-//        if (points.size() == 0) {
-//            return ResultBuilder.getFailure(1, "无点");
-//        } else {
-//            return ResultBuilder.getSuccess(pointAndItems);
-//        }
-//    }
+
+    public ServerResponse<List<PointVO>> getPoints(double longitude, double latitude, int range) {
+        double dlon = MapUtil.dlon(range, latitude);
+        double dlat = MapUtil.dlat(range, longitude);
+        System.out.println(dlat + " " + dlon);
+        double x1 = longitude + dlon;
+        double x2 = longitude - dlon;
+        double y1 = latitude + dlat;
+        double y2 = latitude - dlat;
+        List<Point> points = pointMapper.selectPointsByRange(x1, x2, y1, y2);
+        List<PointVO> pointVOList = new ArrayList<>();
+        for(Point point : points) {
+            pointVOList.add(assemblePointToPointVO(point));
+        }
+        return ServerResponse.createBySuccess(pointVOList);
+    }
+
+    public PointVO assemblePointToPointVO(Point point) {
+        PointVO pointVO = new PointVO();
+        pointVO.setId(point.getId());
+        pointVO.setName(point.getName());
+        pointVO.setLongitude(point.getLongitude());
+        pointVO.setLatitude(point.getLatitude());
+        User user = userMapper.selectByPrimaryKey(point.getCreateBy());
+        pointVO.setUsername(user.getUsername());
+        pointVO.setCreateTime(DateTimeUtil.dateToString(point.getCreateAt()));
+        InformationCount informationCount = new InformationCount();
+        informationCount.setTxtCount(informationMapper.selectByMessageTypeCount(point.getId(), Const.InformationType.TXT_INFORMATION));
+        informationCount.setImgCount(informationMapper.selectByMessageTypeCount(point.getId(), Const.InformationType.IMG_INFORMATION));
+        informationCount.setAudCount(informationMapper.selectByMessageTypeCount(point.getId(), Const.InformationType.AUD_INFORMATION));
+        informationCount.setVidCount(informationMapper.selectByMessageTypeCount(point.getId(), Const.InformationType.VID_INFORMATION));
+        pointVO.setInformationCount(informationCount);
+        return pointVO;
+    }
 //
 //    public ResultModel getItems(int pointId) {
 //        ItemsModel itemsModel = itemsMapper.findItemsByPointId(pointId);

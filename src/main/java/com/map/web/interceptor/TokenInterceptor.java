@@ -15,12 +15,15 @@ import java.util.Map;
 public class TokenInterceptor implements HandlerInterceptor {
     private Logger logger = Logger.getLogger(TokenInterceptor.class);
     // 设置不拦截的路径
-    private static final String[] IGNORE_URL = {"/user", "Form", "/utils", "/none", "/photo",
+    private static final String[] IGNORE_URL = {"/user", "Form", "/utils", "/point", "/photo",
                                             "/audio", "/video", "/register", "/admin"};
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException, IOException {
         boolean flag = false;
         String path = request.getServletPath();
         for (String s : IGNORE_URL) {
+            if (path.equals("point") && request.getMethod().equalsIgnoreCase("get")) {
+                continue;
+            }
             if (path.contains(s)) {
                 flag = true;
                 break;

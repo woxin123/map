@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
                 userInDb.setSex(Const.SEX.SECRET);
             }
             // 设置用户未被锁定
-            userInDb.setIslock(Const.UserStaus.UNLOCK);
+            userInDb.setIslock(Const.UserStatus.UNLOCK);
             // 进行密码加密
             userInDb.setPassword(MD5Util.MD5EncodeUtf8(userInDb.getPassword()));
             int rawCount = userMapper.insert(userInDb);
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createByErrorMessage("用户名或密码错误");
         }
         // 判断用户是否被锁定
-        if (user.getIslock() == Const.UserStaus.LOCK) {
+        if (user.getIslock() == Const.UserStatus.LOCK) {
             return ServerResponse.createByErrorMessage("用户被锁定");
         }
         password = MD5Util.MD5EncodeUtf8(password);
@@ -174,7 +174,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = new User();
         user.setId(userId);
-        user.setIslock(Const.UserStaus.LOCK);
+        user.setIslock(Const.UserStatus.LOCK);
         int rowCount = userMapper.updateByPrimaryKeySelective(user);
         if (rowCount > 0) {
             return ServerResponse.createBySuccessMessage("锁定用户成功");
@@ -189,7 +189,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = new User();
         user.setId(userId);
-        user.setIslock(Const.UserStaus.UNLOCK);
+        user.setIslock(Const.UserStatus.UNLOCK);
         int rowCount = userMapper.updateByPrimaryKeySelective(user);
         if (rowCount > 0) {
             return ServerResponse.createBySuccessMessage("用户解锁成功");
