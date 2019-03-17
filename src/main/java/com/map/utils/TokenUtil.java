@@ -8,6 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.map.pojo.User;
 import redis.clients.jedis.Jedis;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -76,5 +77,23 @@ public class TokenUtil {
         return JedisUtil.createJedis().get(String.valueOf(userId));
     }
 
-
+    /**
+     * 返回-1表示过期
+     * null 表示没有token
+     * @param request
+     * @return
+     */
+    public static Integer getUserIdFromRequest(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        if (token == null) {
+            return null;
+        }
+        Map<String, Claim> map = null;
+        try {
+            map = TokenUtil.verifyToken(token);
+        } catch (Exception ignore) {
+            return -1;
+        }
+        return map.get("id").asInt();
+    }
 }

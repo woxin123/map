@@ -21,6 +21,15 @@
     from map_point
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectLongitudeAndLatitude" resultMap="BaseResultMap" parameterType="map">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM map_point
+    WHERE latitude = #{latitude}
+    AND longitude = #{longitude}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from map_point
     where id = #{id,jdbcType=INTEGER}

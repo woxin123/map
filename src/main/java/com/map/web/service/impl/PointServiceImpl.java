@@ -1,62 +1,56 @@
-//package com.map.web.service.impl;
-//
-//import com.map.domain.Point;
-//import com.map.mapper.ItemsMapper;
-//import com.map.mapper.PointMapper;
-//import com.map.web.model.ItemsModel;
-//import com.map.web.model.PointAndItems;
-//import com.map.web.model.ResultBuilder;
-//import com.map.web.model.ResultModel;
-//import com.map.web.service.PointService;
-//import com.map.utils.MapUtil;
-//import org.apache.log4j.Logger;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.ArrayList;
-//import java.util.Date;
-//import java.util.List;
-//
-//
-//@Service
-//public class PointServiceImpl implements PointService {
-//
-//    Logger logger = Logger.getLogger(PointServiceImpl.class);
-//    @Autowired
-//    PointMapper pointMapper;
-//
-//    @Autowired
-//    ItemsMapper itemsMapper;
-//
-//    public ResultModel addPoint(String name, double longitude, double latitude, int id) {
-//        if (pointMapper.findPointByLongitudeAndLatitude(longitude, latitude) == null) {
-//            Point point = new Point();
-//            point.setName(name);
-//            point.setLongitude(longitude);
-//            point.setLatitude(latitude);
-//            point.setCreateAt(new Date());
-//            point.setCreateBy(id);
-//            if (pointMapper.savePoint(point) != 0) {
-//                logger.info("添加成功");
-//                point = pointMapper.findPointByXY(point.getLongitude(), point.getLatitude());
-//                ItemsModel itemsModel = new ItemsModel(point.getId(), 0, 0,0 ,0);
-//                if (itemsMapper.saveItems(itemsModel) == 0) {
-//                    logger.info("添加失败");
-//                    return ResultBuilder.getFailure(1, "添加失败");
-//                }
-//                return ResultBuilder.getSuccess(point.getId(),"添加成功");
-//            } else {
-//                logger.info("添加失败");
-//                return ResultBuilder.getFailure(1, "添加失败");
-//            }
-//        } else {
-//            logger.info("该点已存在");
-//            // 获取该点的信息
-//            Point point = pointMapper.findPointByXY(longitude, latitude);
-//            System.out.println(point);
-//            return ResultBuilder.getFailure(2, point,"该点已存在");
-//        }
-//    }
+package com.map.web.service.impl;
+
+import com.map.common.ServerResponse;
+import com.map.dao.PointMapper;
+import com.map.pojo.Point;
+import com.map.web.model.ItemsModel;
+import com.map.web.model.PointAndItems;
+import com.map.web.model.ResultBuilder;
+import com.map.web.model.ResultModel;
+import com.map.web.service.PointService;
+import com.map.utils.MapUtil;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+
+@Service
+public class PointServiceImpl implements PointService {
+
+    Logger logger = Logger.getLogger(PointServiceImpl.class);
+
+    private final PointMapper pointMapper;
+
+    public PointServiceImpl(PointMapper pointMapper) {
+        this.pointMapper = pointMapper;
+    }
+
+
+    public ServerResponse addPoint(String name, double longitude, double latitude, int id) {
+        if (pointMapper.selectLongitudeAndLatitude(longitude, latitude) == null) {
+            Point point = new Point();
+            point.setName(name);
+            point.setLongitude(longitude);
+            point.setLatitude(latitude);
+            point.setCreateAt(new Date());
+            point.setCreateBy(id);
+            int rawCount = pointMapper.insert(point);
+            if (rawCount > 0) {
+                logger.info("坐标：" + longitude + ", " + latitude + " 添加成功");
+                return ServerResponse.createBySuccessMessage("添加成功");
+            } else {
+                logger.info("坐标：" + longitude + ", " + latitude + " 添加失败");
+                return ServerResponse.createByErrorMessage("添加失败");
+            }
+        } else {
+            logger.info("该点已存在");
+            return ServerResponse.createByErrorMessage("该点已存在");
+        }
+    }
 //
 //    public ResultModel getPoints(double longitude, double latitude, int range) {
 //        double dlon = MapUtil.dlon(range, latitude);
@@ -121,4 +115,4 @@
 //        }
 //        return ResultBuilder.getFailure(3, "该点解锁失败");
 //    }
-//}
+}

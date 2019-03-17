@@ -31,7 +31,7 @@ public class UserController {
         return userService.login(account, password);
     }
 
-    @GetMapping("user")
+    @GetMapping("/user")
     public ServerResponse<UserOutputVO> getUserMessageById(HttpServletRequest request) {
         Integer userId = (Integer) request.getAttribute("id");
         return userService.getUserMessageById(userId);
